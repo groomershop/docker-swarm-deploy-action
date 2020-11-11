@@ -37,12 +37,12 @@ fi
 if [ -n "$INPUT_USERNAME" ]; then
     echo "Login to DockerHub at $INPUT_REMOTE_HOST.."
     docker --log-level debug --host "$INPUT_REMOTE_HOST" login --username "$INPUT_USERNAME" --password "$INPUT_PASSWORD" 2>&1
-    
-    if [ "$INPUT_LOGOUT" = "true" ]; then
-        echo "Logout from DockerHub at $INPUT_REMOTE_HOST.."
-        docker --log-level debug --host "$INPUT_REMOTE_HOST" logout 2>&1
-    fi
 fi
 
 echo "Connecting to $INPUT_REMOTE_HOST..."
 docker --log-level debug --host "$INPUT_REMOTE_HOST" "$@" 2>&1
+
+if [ "$INPUT_LOGOUT" = "true" ]; then
+    echo "Logout from DockerHub at $INPUT_REMOTE_HOST.."
+    docker --log-level debug --host "$INPUT_REMOTE_HOST" logout 2>&1
+fi
