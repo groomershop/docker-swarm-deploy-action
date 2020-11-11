@@ -34,5 +34,10 @@ if [ ${INPUT_REMOTE_HOST#"ssh://"} != "$INPUT_REMOTE_HOST" ]; then
     printf '%s %s\n' "$SSH_HOST" "$INPUT_SSH_PUBLIC_KEY" >> /etc/ssh/ssh_known_hosts
 fi
 
+if [ -n "$INPUT_USERNAME" ]; then
+    echo "Login to DockerHub at $INPUT_REMOTE_HOST.."
+    docker --log-level debug --host "$INPUT_REMOTE_HOST" login --username "$INPUT_USERNAME" --password "$INPUT_PASSWORD" 2>&1
+fi
+
 echo "Connecting to $INPUT_REMOTE_HOST..."
 docker --log-level debug --host "$INPUT_REMOTE_HOST" "$@" 2>&1
